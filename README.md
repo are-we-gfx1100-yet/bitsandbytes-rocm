@@ -1,26 +1,33 @@
 # bitsandbytes-rocm
 
-Credits to [broncotc/bitsandbytes-rocm](https://github.com/broncotc/bitsandbytes-rocm) for the original fork, and [0cc4m/bitsandbytes-rocm](https://github.com/0cc4m/bitsandbytes-rocm) for updating it. I'm only hosting a local copy as this has some slight tweaks in the Makefile, and instructions
+Credits/History:
+- Original library [TimDettmers/bitsandbytes](https://github.com/TimDettmers/bitsandbytes) - CUDA-only
+- [broncotc/bitsandbytes-rocm](https://github.com/broncotc/bitsandbytes-rocm) original fork to add ROCm support
+- [0cc4m/bitsandbytes-rocm](https://github.com/0cc4m/bitsandbytes-rocm) update of broncotc's fork
+- [mrq/bitsandbytes-rocm](https://git.ecker.tech/mrq/bitsandbytes-rocm) update of 0cc4m's fork to add Makefile and instructions
+- [deftdawg/bitsandbytes-rocm](https://github.com/deftdawg/bitsandbytes-rocm) update mrq's fork with changes to README, tweaks to auto detect card using ROCm tools, change to make compiler ROCm version agnostic
 
-## Pre-Requisite
+The library was tested inside the [Docker ROCm/PyTorch:latest](https://hub.docker.com/r/rocm/pytorch) container image - Ubuntu 20.04/ROCm 5.0.0/Python3.8:
+```sh
+docker run --net=host -it --device=/dev/kfd --device=/dev/dri rocm/pytorch:latest # NOTE: /dev/kfd and /dev/dri must be passed into Docker for ROCm to work
+```
 
-This assumes you're an Arch Linux user like me (or derivation). If you're using a different distro, you can easily adapt it.
+## Pre-Requisites
 
-In `Makefile`:
-* edit line 3 to point to your ROCm install folder (default: `/opt/rocm/`), if your distro installs it in an exotic place
-* that should be it!
+* An AMD GPU capable of supporting ROCm and an appropriate `amdgpu` driver
+
+* Assumes your ROCm tools are installed in `/opt/rocm/` and `rocminfo` is in your path (often found in `/opt/rocm/bin/`), if not edit the `Makefile` to match your distro and/or update your `PATH` before running.
 
 ## Compiling
 
-```
+```sh
 # activate your VENV, if using this within a VENV
-git clone https://git.ecker.tech/mrq/bitsandbytes-rocm
+git clone https://github.com/deftdawg/bitsandbytes-rocm
+export CUDA_VERSION=$(rocminfo | grep -oE "gfx.*" | grep -v gfx000 | sort -u -t 'x' -k 2n | tail -1) # Use ROCm tools to auto detect card
 make hip
-CUDA_VERSION=gfx1030 python setup.py install # assumes you're using a 6XXX series card
+python setup.py install
 python3 -m bitsandbytes # to validate it works
 ```
-
-**!**NOTE**!**: this assumes you have a AMD 6XXX series card. Adapt this to your proper GFX version if different.
 
 ---
 
