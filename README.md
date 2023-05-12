@@ -23,7 +23,7 @@ docker run --net=host -it --device=/dev/kfd --device=/dev/dri rocm/pytorch:lates
 ```sh
 # activate your VENV, if using this within a VENV
 git clone https://github.com/deftdawg/bitsandbytes-rocm
-export CUDA_VERSION=$(rocminfo | grep -oE "gfx.*" | grep -v gfx000 | sort -u -t 'x' -k 2n | tail -1) # Use ROCm tools to auto detect card
+export CUDA_VERSION=gfx1100 # Use ROCm tools to auto detect card
 make hip
 python setup.py install
 python3 -m bitsandbytes # to validate it works
