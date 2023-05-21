@@ -12,6 +12,14 @@ The library was tested inside the [Docker ROCm/PyTorch:latest](https://hub.docke
 docker run --net=host -it --device=/dev/kfd --device=/dev/dri rocm/pytorch:latest # NOTE: /dev/kfd and /dev/dri must be passed into Docker for ROCm to work
 ```
 
+## Disclaimer
+
+This is a dirty fork for [ROCm LAB](https://github.com/evshiron/rocm_lab), which is built [here](https://github.com/evshiron/rocm_lab/actions/workflows/build-rocm5.5-bitsandbytes-wheels.yaml), but it hasn't been tested yet.
+
+It would be appreciated to help me test its functionalities, and I am looking forward to your feedback.
+
+However, if you want to continue the development, forking [deftdawg/bitsandbytes-rocm](https://github.com/deftdawg/bitsandbytes-rocm) instead is recommended.
+
 ## Pre-Requisites
 
 * An AMD GPU capable of supporting ROCm and an appropriate `amdgpu` driver
